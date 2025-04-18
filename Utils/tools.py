@@ -49,3 +49,41 @@ def clean_grade(s):
         return "Grade 3"
     else:
         return s
+
+def stratified_splitting(full_dataset, label_array, classes=[0,1,2,3],
+                         train_size=0.7, val_size=0.1, test_size=0.2, random_state=None):    
+    if random_state is not None:
+        np.random.seed(random_state)
+
+    train_idx, val_idx, test_idx = [], [], []
+
+    for label in classes:
+        class_indices = np.where(label_array == label)[0]
+        np.random.shuffle(class_indices)
+
+        n_total = len(class_indices)
+        n_train = int(n_total * train_size)
+        n_val = int(n_total * val_size)
+        n_test = n_total - n_train - n_val
+
+        train_idx.extend(class_indices[:n_train])
+        val_idx.extend(class_indices[n_train:n_train + n_val])
+        test_idx.extend(class_indices[n_train + n_val:])
+
+    np.random.shuffle(train_idx)
+    np.random.shuffle(val_idx)
+    np.random.shuffle(test_idx)
+
+    dataset_subsets = {
+        'train': [full_dataset[i] for i in train_idx],
+        'val': [full_dataset[i] for i in val_idx],
+        'test': [full_dataset[i] for i in test_idx]
+    }
+
+    label_subsets = {
+        'train': [label_array[i] for i in train_idx],
+        'val': [label_array[i] for i in val_idx],
+        'test': [label_array[i] for i in test_idx]
+    }
+
+    return dataset_subsets, label_subsets

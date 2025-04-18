@@ -49,5 +49,3 @@ def clean_grade(s):
         return "Grade 3"
     else:
         return s
-
-df["Tumour Grade Cleaned"] = df["Tumour Grade"].apply(clean_grade)

@@ -52,8 +52,8 @@ class EasyData():
 
       for i in self.method:
         if i == 'a1':
-          final_dataset["a1"] = self.embedding
-
+          final_dataset["a1"] = pd.concat([self.embedding, self.load_clinical_data()["Mapped Cancer Stage"]], axis=1)
+          
         elif i == 'a2':
           final_dataset["a2"] = self.load_clinical_data()
         

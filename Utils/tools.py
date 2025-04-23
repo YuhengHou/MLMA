@@ -51,8 +51,7 @@ def clean_grade(s):
     else:
         return s
 
-def stratified_splitting(full_dataset, label_array, classes=[0,1,2,3],
-                         train_size=0.7, val_size=0.1, test_size=0.2, random_state=None):    
+def stratified_splitting(full_dataset, label_array, classes=[0,1,2,3], train_size=0.7, val_size=0.1, test_size=0.2, random_state=None):
     if random_state is not None:
         np.random.seed(random_state)
 
@@ -76,9 +75,11 @@ def stratified_splitting(full_dataset, label_array, classes=[0,1,2,3],
     np.random.shuffle(test_idx)
 
     dataset_subsets = {
-        'train': [full_dataset[i] for i in train_idx],
-        'val': [full_dataset[i] for i in val_idx],
-        'test': [full_dataset[i] for i in test_idx]
+        'train': full_dataset.iloc[train_idx],
+        'val': full_dataset.iloc[val_idx],
+        'test': full_dataset.iloc[test_idx]
     }
 
+
     return dataset_subsets
+

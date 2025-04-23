@@ -81,10 +81,4 @@ def stratified_splitting(full_dataset, label_array, classes=[0,1,2,3],
         'test': [full_dataset[i] for i in test_idx]
     }
 
-    label_subsets = {
-        'train': [label_array[i] for i in train_idx],
-        'val': [label_array[i] for i in val_idx],
-        'test': [label_array[i] for i in test_idx]
-    }
-
-    return dataset_subsets, label_subsets
+    return dataset_subsets

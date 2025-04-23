@@ -1,5 +1,6 @@
 import pandas as pd
 from datasets import load_dataset
+import numpy as np
 
 class EasyData():
   def __init__(self, embedding, method = ["a1", "a2", "a3"]):
@@ -60,3 +61,36 @@ class EasyData():
           final_dataset["a3"] = pd.concat([self.embedding, self.load_clinical_data()], axis=1)
       
       return final_dataset
+
+  def stratified_splitting(self, full_dataset, classes=[0,1,2,3], train_size=0.7, val_size=0.1, test_size=0.2, random_state=None):
+      label_array = full_dataset["Mapped Cancer Stage"].astype(int).values
+      if random_state is not None:
+          np.random.seed(random_state)
+  
+      train_idx, val_idx, test_idx = [], [], []
+  
+      for label in classes:
+          class_indices = np.where(label_array == label)[0]
+          np.random.shuffle(class_indices)
+  
+          n_total = len(class_indices)
+          n_train = int(n_total * train_size)
+          n_val = int(n_total * val_size)
+          n_test = n_total - n_train - n_val
+  
+          train_idx.extend(class_indices[:n_train])
+          val_idx.extend(class_indices[n_train:n_train + n_val])
+          test_idx.extend(class_indices[n_train + n_val:])
+  
+      np.random.shuffle(train_idx)
+      np.random.shuffle(val_idx)
+      np.random.shuffle(test_idx)
+  
+      dataset_subsets = {
+          'train': full_dataset.iloc[train_idx],
+          'val': full_dataset.iloc[val_idx],
+          'test': full_dataset.iloc[test_idx]
+      }
+  
+  
+      return dataset_subsets

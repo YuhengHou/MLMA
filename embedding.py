@@ -157,11 +157,11 @@ def export_delta_finetuned():
     print(f"✅ Saved to {SAVE_DELTA_FINETUNED}")
 
 # === Run All ===
-# export_mutated_only()
-# torch.cuda.empty_cache(); gc.collect()
+export_mutated_only()
+torch.cuda.empty_cache(); gc.collect()
 
-# export_delta()
-# torch.cuda.empty_cache(); gc.collect()
+export_delta()
+torch.cuda.empty_cache(); gc.collect()
 
 export_delta_finetuned()
 torch.cuda.empty_cache(); gc.collect()
